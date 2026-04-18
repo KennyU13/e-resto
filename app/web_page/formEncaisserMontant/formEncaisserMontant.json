@@ -1,0 +1,531 @@
+{
+  "id": "formEncaisserMontant",
+  "name": "formEncaisserMontant",
+  "type": "form",
+  "uuid": "e8f40dc2-1c57-4dc3-913d-8b54af6fc093",
+  "modelVersion": "2.6",
+  "lastUpdate": 1776102000003,
+  "description": "Page generated with Bonita UI designer",
+  "rows": [
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "level": {
+            "type": "constant",
+            "value": "Level 2"
+          },
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "text": {
+            "type": "interpolation",
+            "value": "Encaisser le montant"
+          },
+          "alignment": {
+            "type": "constant",
+            "value": "left"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          },
+          "allowHTML": {
+            "type": "constant",
+            "value": false
+          }
+        },
+        "reference": "encaisse-title-simple",
+        "hasValidationError": false,
+        "id": "pbTitle",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "allowHTML": {
+            "type": "constant",
+            "value": true
+          },
+          "labelHidden": {
+            "type": "constant",
+            "value": true
+          },
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "label": {
+            "type": "interpolation",
+            "value": ""
+          },
+          "text": {
+            "type": "interpolation",
+            "value": "{{encaisse_summary_html}}"
+          },
+          "alignment": {
+            "type": "constant",
+            "value": "left"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          }
+        },
+        "reference": "encaisse-summary-simple",
+        "hasValidationError": false,
+        "id": "pbText",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "labelHidden": {
+            "type": "constant",
+            "value": false
+          },
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "labelPosition": {
+            "type": "constant",
+            "value": "top"
+          },
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "labelWidth": {
+            "type": "constant",
+            "value": 1
+          },
+          "readOnly": {
+            "type": "constant",
+            "value": true
+          },
+          "label": {
+            "type": "interpolation",
+            "value": "Montant g\u00e9n\u00e9r\u00e9"
+          },
+          "placeholder": {
+            "type": "constant",
+            "value": ""
+          },
+          "type": {
+            "type": "constant",
+            "value": "number"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          },
+          "value": {
+            "type": "variable",
+            "value": "facture.montant"
+          },
+          "required": {
+            "type": "constant",
+            "value": true
+          },
+          "allowHTML": {
+            "type": "constant",
+            "value": false
+          },
+          "minLength": {
+            "type": "constant",
+            "value": ""
+          },
+          "maxLength": {
+            "type": "constant",
+            "value": ""
+          },
+          "debounce": {
+            "type": "constant",
+            "value": 0
+          },
+          "min": {
+            "type": "constant",
+            "value": ""
+          },
+          "max": {
+            "type": "constant",
+            "value": ""
+          },
+          "step": {
+            "type": "constant",
+            "value": 1
+          }
+        },
+        "reference": "encaisse-input-montant",
+        "hasValidationError": false,
+        "id": "pbInput",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "disabled": {
+            "type": "constant",
+            "value": false
+          },
+          "required": {
+            "type": "constant",
+            "value": true
+          },
+          "allowHTML": {
+            "type": "constant",
+            "value": false
+          },
+          "labelHidden": {
+            "type": "constant",
+            "value": false
+          },
+          "label": {
+            "type": "interpolation",
+            "value": "Statut du paiement"
+          },
+          "labelPosition": {
+            "type": "constant",
+            "value": "top"
+          },
+          "labelWidth": {
+            "type": "constant",
+            "value": 4
+          },
+          "placeholder": {
+            "type": "interpolation",
+            "value": "S\u00e9lectionner le statut"
+          },
+          "availableValues": {
+            "type": "expression",
+            "value": "[\"NON PAYE\",\"PAYE\"]"
+          },
+          "displayedKey": {
+            "type": "expression",
+            "value": "item"
+          },
+          "returnedKey": {
+            "type": "expression",
+            "value": "item"
+          },
+          "value": {
+            "type": "variable",
+            "value": "facture.statutPaiement"
+          }
+        },
+        "reference": "encaisse-select-statut",
+        "hasValidationError": false,
+        "id": "pbSelect",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "allowHTML": {
+            "type": "constant",
+            "value": false
+          },
+          "label": {
+            "type": "interpolation",
+            "value": "Valider le paiement"
+          },
+          "buttonStyle": {
+            "type": "constant",
+            "value": "primary"
+          },
+          "dataToSend": {
+            "type": "expression",
+            "value": "formOutput"
+          },
+          "dataFromError": {
+            "type": "variable",
+            "value": "formOutput._submitError"
+          },
+          "targetUrlOnSuccess": {
+            "type": "interpolation",
+            "value": ""
+          },
+          "closeOnSuccess": {
+            "type": "constant",
+            "value": false
+          },
+          "collectionPosition": {
+            "type": "constant",
+            "value": "Last"
+          },
+          "action": {
+            "type": "constant",
+            "value": "Submit task"
+          },
+          "collectionToModify": {
+            "type": "variable",
+            "value": ""
+          },
+          "responseStatusCode": {
+            "type": "variable",
+            "value": ""
+          },
+          "removeItem": {
+            "type": "variable",
+            "value": ""
+          },
+          "valueToAdd": {
+            "type": "expression",
+            "value": ""
+          },
+          "disabled": {
+            "type": "expression",
+            "value": "$form.$invalid"
+          },
+          "alignment": {
+            "type": "constant",
+            "value": "center"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          },
+          "assign": {
+            "type": "constant",
+            "value": false
+          },
+          "url": {
+            "type": "interpolation",
+            "value": ""
+          },
+          "dataFromSuccess": {
+            "type": "variable",
+            "value": ""
+          },
+          "modalId": {
+            "type": "constant",
+            "value": ""
+          }
+        },
+        "reference": "encaisse-button-simple",
+        "hasValidationError": false,
+        "id": "pbButton",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "allowHTML": {
+            "type": "constant",
+            "value": true
+          },
+          "labelHidden": {
+            "type": "constant",
+            "value": true
+          },
+          "hidden": {
+            "type": "expression",
+            "value": "!formOutput._submitError.message"
+          },
+          "cssClasses": {
+            "type": "constant",
+            "value": "alert alert-danger"
+          },
+          "label": {
+            "type": "interpolation",
+            "value": ""
+          },
+          "text": {
+            "type": "interpolation",
+            "value": "<strong>Erreur de soumission</strong><br/>{{formOutput._submitError.message}}{{submit_errors_list}}"
+          },
+          "alignment": {
+            "type": "constant",
+            "value": "left"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          }
+        },
+        "reference": "encaisse-error-simple",
+        "hasValidationError": false,
+        "id": "pbText",
+        "description": ""
+      }
+    ]
+  ],
+  "variables": {
+    "task": {
+      "type": "url",
+      "value": [
+        "../API/bpm/userTask/{{taskId}}"
+      ],
+      "exposed": false
+    },
+    "context": {
+      "type": "url",
+      "value": [
+        "../API/bpm/userTask/{{taskId}}/context"
+      ],
+      "exposed": false
+    },
+    "facture": {
+      "type": "url",
+      "value": [
+        "../{{context.facture_ref.link}}"
+      ],
+      "exposed": false
+    },
+    "encaisse_reservation": {
+      "type": "url",
+      "value": [
+        "{{facture|lazyRef:'reservation'}}"
+      ],
+      "exposed": false
+    },
+    "encaisse_client": {
+      "type": "url",
+      "value": [
+        "{{encaisse_reservation|lazyRef:'cliente'}}"
+      ],
+      "exposed": false
+    },
+    "encaisse_chambre": {
+      "type": "url",
+      "value": [
+        "{{encaisse_reservation|lazyRef:'chambre'}}"
+      ],
+      "exposed": false
+    },
+    "encaisse_categorie": {
+      "type": "url",
+      "value": [
+        "{{encaisse_chambre|lazyRef:'categorie'}}"
+      ],
+      "exposed": false
+    },
+    "encaisse_summary_html": {
+      "type": "expression",
+      "exposed": false,
+      "value": [
+        "const c=$data.encaisse_client||{};",
+        "const r=$data.encaisse_reservation||{};",
+        "const ch=$data.encaisse_chambre||{};",
+        "const rawCat=$data.encaisse_categorie;",
+        "const cat=Array.isArray(rawCat)?((rawCat[0]&&rawCat[0].nom)||'Non definie'):((rawCat&&rawCat.nom)||'Non definie');",
+        "const fullName=[c.nomClient,c.prenomClient].filter(v=>v!==undefined&&v!==null&&String(v).trim()!=='').join(' ').trim();",
+        "return \"<div class='row'>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CLIENT</strong><h4>\"+(fullName||'-')+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CHAMBRE</strong><h4>\"+(ch.numero!==undefined?ch.numero:'-')+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CATEGORIE</strong><h4>\"+cat+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>NUITS</strong><h4>\"+(r.nbNuits!==undefined?r.nbNuits:'-')+\"</h4></div></div></div>\"+\"</div>\";"
+      ]
+    },
+    "submit_errors_list": {
+      "type": "expression",
+      "value": [
+        "if($data.formOutput&&$data.formOutput._submitError&&$data.formOutput._submitError.explanations){",
+        "const li=$data.formOutput._submitError.explanations.filter(c=>c!==null).map(c=>\"<li>\"+c+\"</li>\").join('');",
+        "if(li){return \"<ul>\"+li+\"</ul>\";}}"
+      ],
+      "exposed": false
+    },
+    "formOutput": {
+      "type": "expression",
+      "value": [
+        "if($data.facture){return {factureInput:{montant:$data.facture.montant!==undefined?$data.facture.montant:null,statutPaiement:$data.facture.statutPaiement!==undefined?$data.facture.statutPaiement:null}};}"
+      ],
+      "exposed": false
+    },
+    "taskId": {
+      "type": "urlparameter",
+      "value": [
+        "id"
+      ],
+      "exposed": false
+    }
+  },
+  "assets": [
+    {
+      "id": "fd31ae13-a02c-4987-94d9-d0892a75641c",
+      "name": "style.css",
+      "type": "css",
+      "order": 0,
+      "external": false
+    },
+    {
+      "id": "c9119752-b237-45f7-8908-b9c3c5fbb518",
+      "name": "localization.json",
+      "type": "json",
+      "order": 0,
+      "external": false
+    }
+  ],
+  "inactiveAssets": [],
+  "webResources": [],
+  "hasValidationError": false
+}
