@@ -324,18 +324,23 @@
       "type": "expression",
       "exposed": false,
       "value": [
-        "const list=Array.isArray($data.articles)?$data.articles:[];",
+        "const raw=Array.isArray($data.articles)?$data.articles:[];",
+        "const byName={}; raw.forEach(item=>{const key=String(item.nom||'').toLowerCase(); if(key && (!byName[key] || Number(item.quantiteStock||0)<Number(byName[key].quantiteStock||0))){byName[key]=item;}});",
+        "const list=Object.keys(byName).map(key=>byName[key]);",
         "const tracked=list.length;",
         "const units=list.reduce((sum,item)=>sum+Number(item.quantiteStock||0),0);",
         "const alerts=list.filter(item=>Number(item.quantiteStock||0)<=10).length;",
-        "return \"<div class='row'><div class='col-sm-4'><div class='panel panel-default'><div class='panel-body'><strong>Articles suivis</strong><h3>\"+tracked+\"</h3></div></div></div><div class='col-sm-4'><div class='panel panel-default'><div class='panel-body'><strong>Unites en stock</strong><h3>\"+units+\"</h3></div></div></div><div class='col-sm-4'><div class='panel panel-default'><div class='panel-body'><strong>Alertes stock faible</strong><h3>\"+alerts+\"</h3></div></div></div></div>\";"
+        "const pageStyle=\"<style>body{background:#eef4f6}.panel{border:0;border-radius:18px;box-shadow:0 14px 34px rgba(12,43,60,.14);overflow:hidden}.panel-heading{background:linear-gradient(135deg,#0f3d57,#1f7a8c)!important;color:#fff!important;border:0}.panel-body{background:linear-gradient(135deg,#ffffff,#f4fbfc)}h2,h3,h4{color:#0f3d57;font-weight:800}.table{background:#fff;border-radius:14px;overflow:hidden}.table>thead>tr>th{background:#0f3d57;color:#fff;border-color:#0f3d57}.alert{border:0;border-radius:16px;box-shadow:0 10px 26px rgba(12,43,60,.10)}.btn-primary{background:#d66b00;border-color:#b85c00;border-radius:14px;font-weight:700}.form-control{border-radius:12px;border-color:#c9dce3}</style>\";",
+        "return pageStyle+\"<div class='row'><div class='col-sm-4'><div class='panel panel-default'><div class='panel-body'><strong>Articles suivis</strong><h3>\"+tracked+\"</h3></div></div></div><div class='col-sm-4'><div class='panel panel-default'><div class='panel-body'><strong>Unites en stock</strong><h3>\"+units+\"</h3></div></div></div><div class='col-sm-4'><div class='panel panel-default'><div class='panel-body'><strong>Alertes stock faible</strong><h3>\"+alerts+\"</h3></div></div></div></div>\";"
       ]
     },
     "stock_table_html": {
       "type": "expression",
       "exposed": false,
       "value": [
-        "const list=Array.isArray($data.articles)?$data.articles.slice():[];",
+        "const raw=Array.isArray($data.articles)?$data.articles.slice():[];",
+        "const byName={}; raw.forEach(item=>{const key=String(item.nom||'').toLowerCase(); if(key && (!byName[key] || Number(item.quantiteStock||0)<Number(byName[key].quantiteStock||0))){byName[key]=item;}});",
+        "const list=Object.keys(byName).map(key=>byName[key]);",
         "if(!list.length){return \"<div class='alert alert-info'>Aucun article trouve.</div>\";}",
         "list.sort((a,b)=>String(a.nom||'').localeCompare(String(b.nom||'')));",
         "const rows=list.map(item=>{const q=Number(item.quantiteStock||0);const etat=q<=10?\"Stock faible\":\"OK\";return \"<tr><td>\"+(item.nom||'-')+\"</td><td>\"+q+\"</td><td>\"+etat+\"</td></tr>\";}).join('');",

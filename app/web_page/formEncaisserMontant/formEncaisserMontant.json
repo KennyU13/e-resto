@@ -351,7 +351,7 @@
           },
           "assign": {
             "type": "constant",
-            "value": false
+            "value": true
           },
           "url": {
             "type": "interpolation",
@@ -482,7 +482,8 @@
         "const rawCat=$data.encaisse_categorie;",
         "const cat=Array.isArray(rawCat)?((rawCat[0]&&rawCat[0].nom)||'Non definie'):((rawCat&&rawCat.nom)||'Non definie');",
         "const fullName=[c.nomClient,c.prenomClient].filter(v=>v!==undefined&&v!==null&&String(v).trim()!=='').join(' ').trim();",
-        "return \"<div class='row'>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CLIENT</strong><h4>\"+(fullName||'-')+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CHAMBRE</strong><h4>\"+(ch.numero!==undefined?ch.numero:'-')+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CATEGORIE</strong><h4>\"+cat+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>NUITS</strong><h4>\"+(r.nbNuits!==undefined?r.nbNuits:'-')+\"</h4></div></div></div>\"+\"</div>\";"
+        "const pageStyle=\"<style>body{background:#eef4f6}.panel{border:0;border-radius:18px;box-shadow:0 14px 34px rgba(12,43,60,.14);overflow:hidden}.panel-heading{background:linear-gradient(135deg,#0f3d57,#1f7a8c)!important;color:#fff!important;border:0}.panel-body{background:linear-gradient(135deg,#ffffff,#f4fbfc)}h2,h3,h4{color:#0f3d57;font-weight:800}.table{background:#fff;border-radius:14px;overflow:hidden}.table>thead>tr>th{background:#0f3d57;color:#fff;border-color:#0f3d57}.alert{border:0;border-radius:16px;box-shadow:0 10px 26px rgba(12,43,60,.10)}.btn-primary{background:#d66b00;border-color:#b85c00;border-radius:14px;font-weight:700}.form-control{border-radius:12px;border-color:#c9dce3}</style>\";",
+        "return pageStyle+\"<div class='row'>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CLIENT</strong><h4>\"+(fullName||'-')+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CHAMBRE</strong><h4>\"+(ch.numero!==undefined?ch.numero:'-')+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>CATEGORIE</strong><h4>\"+cat+\"</h4></div></div></div>\"+\"<div class='col-sm-6 col-md-3'><div class='panel panel-default'><div class='panel-body'><strong>NUITS</strong><h4>\"+(r.nbNuits!==undefined?r.nbNuits:'-')+\"</h4></div></div></div>\"+\"</div>\";"
       ]
     },
     "submit_errors_list": {

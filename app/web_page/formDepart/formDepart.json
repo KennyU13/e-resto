@@ -4,7 +4,7 @@
   "type": "form",
   "uuid": "d384dcb9-454a-483c-b462-d5aa6c0ef43b",
   "modelVersion": "2.6",
-  "lastUpdate": 1776102000001,
+  "lastUpdate": 1778517600000,
   "description": "Page generated with Bonita UI designer",
   "rows": [
     [
@@ -31,11 +31,11 @@
           },
           "text": {
             "type": "interpolation",
-            "value": "D\u00e9part du client"
+            "value": "Depart du client"
           },
           "alignment": {
             "type": "constant",
-            "value": "center"
+            "value": "left"
           },
           "dimension": {
             "type": "constant",
@@ -46,7 +46,7 @@
             "value": false
           }
         },
-        "reference": "depart-title-simple",
+        "reference": "depart-title-modern",
         "hasValidationError": false,
         "id": "pbTitle",
         "description": ""
@@ -64,7 +64,7 @@
         "propertyValues": {
           "allowHTML": {
             "type": "constant",
-            "value": false
+            "value": true
           },
           "labelHidden": {
             "type": "constant",
@@ -84,18 +84,67 @@
           },
           "text": {
             "type": "interpolation",
-            "value": "Confirmer le d\u00e9part du client ?"
+            "value": "{{depart_summary_html}}"
           },
           "alignment": {
             "type": "constant",
-            "value": "center"
+            "value": "left"
           },
           "dimension": {
             "type": "constant",
             "value": 12
           }
         },
-        "reference": "depart-question-simple",
+        "reference": "depart-summary-modern",
+        "hasValidationError": false,
+        "id": "pbText",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "allowHTML": {
+            "type": "constant",
+            "value": true
+          },
+          "labelHidden": {
+            "type": "constant",
+            "value": true
+          },
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "label": {
+            "type": "interpolation",
+            "value": ""
+          },
+          "text": {
+            "type": "interpolation",
+            "value": "<div class='alert alert-warning'><strong>Confirmation</strong><br/>Validez uniquement quand le client a quitte la chambre. La chambre passera ensuite a l'etat sale en attente de nettoyage.</div>"
+          },
+          "alignment": {
+            "type": "constant",
+            "value": "left"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          }
+        },
+        "reference": "depart-help-modern",
         "hasValidationError": false,
         "id": "pbText",
         "description": ""
@@ -125,7 +174,7 @@
           },
           "label": {
             "type": "interpolation",
-            "value": "Confirmer"
+            "value": "Confirmer le depart"
           },
           "buttonStyle": {
             "type": "constant",
@@ -185,7 +234,7 @@
           },
           "assign": {
             "type": "constant",
-            "value": false
+            "value": true
           },
           "url": {
             "type": "interpolation",
@@ -200,7 +249,7 @@
             "value": ""
           }
         },
-        "reference": "depart-button-simple",
+        "reference": "depart-button-modern",
         "hasValidationError": false,
         "id": "pbButton",
         "description": ""
@@ -249,7 +298,7 @@
             "value": 12
           }
         },
-        "reference": "depart-error-simple",
+        "reference": "depart-error-modern",
         "hasValidationError": false,
         "id": "pbText",
         "description": ""
@@ -263,6 +312,61 @@
         "../API/bpm/userTask/{{taskId}}"
       ],
       "exposed": false
+    },
+    "context": {
+      "type": "url",
+      "value": [
+        "../API/bpm/userTask/{{taskId}}/context"
+      ],
+      "exposed": false
+    },
+    "reservation": {
+      "type": "url",
+      "value": [
+        "../{{context.reservation_ref.link}}"
+      ],
+      "exposed": false
+    },
+    "depart_client": {
+      "type": "url",
+      "value": [
+        "{{reservation|lazyRef:'cliente'}}"
+      ],
+      "exposed": false
+    },
+    "depart_chambre": {
+      "type": "url",
+      "value": [
+        "{{reservation|lazyRef:'chambre'}}"
+      ],
+      "exposed": false
+    },
+    "depart_categorie": {
+      "type": "url",
+      "value": [
+        "{{depart_chambre|lazyRef:'categorie'}}"
+      ],
+      "exposed": false
+    },
+    "depart_summary_html": {
+      "type": "expression",
+      "exposed": false,
+      "value": [
+        "const c=$data.depart_client||{};",
+        "const r=$data.reservation||{};",
+        "const ch=$data.depart_chambre||{};",
+        "const dateReservation=r.dateReservation?new Date(r.dateReservation).toLocaleDateString('fr-FR'):'-';",
+        "const heureDepart=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});",
+        "const rawCat=$data.depart_categorie;",
+        "const cat=Array.isArray(rawCat)?((rawCat[0]&&rawCat[0].nom)||'Non definie'):((rawCat&&rawCat.nom)||'Non definie');",
+        "const fullName=[c.nomClient,c.prenomClient].filter(v=>v!==undefined&&v!==null&&String(v).trim()!=='').join(' ').trim();",
+        "const pageStyle=\"<style>body{background:#eef4f6}.panel{border:0;border-radius:18px;box-shadow:0 14px 34px rgba(12,43,60,.14);overflow:hidden}.panel-heading{background:linear-gradient(135deg,#0f3d57,#1f7a8c)!important;color:#fff!important;border:0}.panel-body{background:linear-gradient(135deg,#ffffff,#f4fbfc)}h2,h3,h4{color:#0f3d57;font-weight:800}.table{background:#fff;border-radius:14px;overflow:hidden}.table>thead>tr>th{background:#0f3d57;color:#fff;border-color:#0f3d57}.alert{border:0;border-radius:16px;box-shadow:0 10px 26px rgba(12,43,60,.10)}.btn-primary{background:#d66b00;border-color:#b85c00;border-radius:14px;font-weight:700}.form-control{border-radius:12px;border-color:#c9dce3}</style>\";",
+        "return pageStyle+\"<div class='row'>\"+",
+        "\"<div class='col-sm-4'><div class='panel panel-default'><div class='panel-heading'><strong>CLIENT</strong></div><div class='panel-body'><h3>\"+(fullName||'-')+\"</h3><p>Telephone : \"+((c.telephone||'-').toString())+\"</p><p>Piece : \"+((c.pieceIdentite||'-').toString())+\"</p></div></div></div>\"+",
+        "\"<div class='col-sm-4'><div class='panel panel-default'><div class='panel-heading'><strong>CHAMBRE</strong></div><div class='panel-body'><h3>\"+(ch.numero!==undefined?ch.numero:'-')+\"</h3><p>Categorie : \"+cat+\"</p></div></div></div>\"+",
+        "\"<div class='col-sm-4'><div class='panel panel-default'><div class='panel-heading'><strong>SEJOUR</strong></div><div class='panel-body'><h3>\"+(r.nbNuits!==undefined?r.nbNuits:'-')+\" nuit(s)</h3><p>Date reservation : \"+dateReservation+\"</p><p>Heure depart : \"+heureDepart+\"</p><p>Statut actuel : \"+((ch.statut||'-').toString())+\"</p></div></div></div>\"+",
+        "\"</div>\";"
+      ]
     },
     "submit_errors_list": {
       "type": "expression",
@@ -290,16 +394,16 @@
   },
   "assets": [
     {
-      "id": "c2c62a32-23e9-4020-9996-add73a2e5950",
-      "name": "localization.json",
-      "type": "json",
+      "id": "dfdb2dbf-8fdc-4d15-b6d8-aab90bdc4a17",
+      "name": "style.css",
+      "type": "css",
       "order": 0,
       "external": false
     },
     {
-      "id": "404d9377-b473-4566-a55e-29bc41559452",
-      "name": "style.css",
-      "type": "css",
+      "id": "896cd2b2-d0ee-4bbc-bb2e-ffb55db98506",
+      "name": "localization.json",
+      "type": "json",
       "order": 0,
       "external": false
     }

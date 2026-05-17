@@ -369,6 +369,20 @@
       ],
       "exposed": false
     },
+    "reservations": {
+      "type": "url",
+      "value": [
+        "../API/bdm/businessData/com.company.model.Reservation?q=find&p=0&c=999"
+      ],
+      "exposed": false
+    },
+    "clientes": {
+      "type": "url",
+      "value": [
+        "../API/bdm/businessData/com.company.model.Cliente?q=find&p=0&c=999"
+      ],
+      "exposed": false
+    },
     "chambres": {
       "type": "url",
       "value": [
@@ -388,16 +402,20 @@
       "exposed": false,
       "value": [
         "const factures=Array.isArray($data.factures)?$data.factures:[];",
-        "const chambres=Array.isArray($data.chambres)?$data.chambres:[];",
-        "const articles=Array.isArray($data.articles)?$data.articles:[];",
+        "const rawChambres=Array.isArray($data.chambres)?$data.chambres:[];",
         "const norm=value=>String(value||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');",
+        "const rank=item=>{const s=norm(item&&item.statut); if(s==='sale') return 3; if(s.includes('occupee')) return 2; if(s==='propre') return 1; return 0;};",
+        "const byNumero={}; rawChambres.forEach(item=>{const key=String(item.numero||''); if(key && (!byNumero[key] || rank(item)>rank(byNumero[key]))){byNumero[key]=item;}});",
+        "const chambres=Object.keys(byNumero).map(key=>byNumero[key]);",
+        "const articles=Array.isArray($data.articles)?$data.articles:[];",
         "const totalMontant=factures.reduce((sum,item)=>sum+Number(item.montant||0),0);",
         "const payees=factures.filter(item=>norm(item.statutPaiement)==='paye').length;",
         "const occupees=chambres.filter(item=>norm(item.statut).includes('occupee')).length;",
         "const propres=chambres.filter(item=>norm(item.statut)==='propre').length;",
         "const sales=chambres.filter(item=>norm(item.statut)==='sale').length;",
         "const alertes=articles.filter(item=>Number(item.quantiteStock||0)<=10).length;",
-        "return \"<div class='row'><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Nombre de factures</strong><h3>\"+factures.length+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Factures payees</strong><h3>\"+payees+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Montant total</strong><h3>\"+totalMontant+\" Ar</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Chambres occupees</strong><h3>\"+occupees+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Chambres libres et propres</strong><h3>\"+propres+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Chambres a nettoyer</strong><h3>\"+sales+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Articles en alerte</strong><h3>\"+alertes+\"</h3></div></div></div></div>\";"
+        "const pageStyle=\"<style>body{background:#eef4f6}.panel{border:0;border-radius:18px;box-shadow:0 14px 34px rgba(12,43,60,.14);overflow:hidden}.panel-heading{background:linear-gradient(135deg,#0f3d57,#1f7a8c)!important;color:#fff!important;border:0}.panel-body{background:linear-gradient(135deg,#ffffff,#f4fbfc)}h2,h3,h4{color:#0f3d57;font-weight:800}.table{background:#fff;border-radius:14px;overflow:hidden}.table>thead>tr>th{background:#0f3d57;color:#fff;border-color:#0f3d57}.alert{border:0;border-radius:16px;box-shadow:0 10px 26px rgba(12,43,60,.10)}.btn-primary{background:#d66b00;border-color:#b85c00;border-radius:14px;font-weight:700}.form-control{border-radius:12px;border-color:#c9dce3}</style>\";",
+        "return pageStyle+\"<div class='row'><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Nombre de factures</strong><h3>\"+factures.length+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Factures payees</strong><h3>\"+payees+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Montant total</strong><h3>\"+totalMontant+\" Ar</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Chambres occupees</strong><h3>\"+occupees+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Chambres libres et propres</strong><h3>\"+propres+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Chambres a nettoyer</strong><h3>\"+sales+\"</h3></div></div></div><div class='col-sm-6 col-md-4'><div class='panel panel-default'><div class='panel-body'><strong>Articles en alerte</strong><h3>\"+alertes+\"</h3></div></div></div></div>\";"
       ]
     },
     "dashboard_factures_html": {
@@ -405,17 +423,25 @@
       "exposed": false,
       "value": [
         "const factures=Array.isArray($data.factures)?$data.factures.slice():[];",
+        "const reservations=Array.isArray($data.reservations)?$data.reservations:[];",
+        "const clientes=Array.isArray($data.clientes)?$data.clientes:[];",
         "if(!factures.length){return \"<div class='panel panel-default'><div class='panel-heading'><strong>Factures recentes</strong></div><div class='panel-body'>Aucune facture disponible.</div></div>\";}",
         "factures.sort((a,b)=>new Date(b.dateFacture||0)-new Date(a.dateFacture||0));",
-        "const rows=factures.slice(0,8).map(item=>{const d=item.dateFacture?new Date(item.dateFacture).toLocaleDateString('fr-FR'):'-';const status=String(item.statutPaiement||'-');const badge=status==='PAYE'?\"<span class='label label-success'>PAYE</span>\":\"<span class='label label-default'>\"+status+\"</span>\";return \"<tr><td>\"+d+\"</td><td>\"+Number(item.montant||0)+\" Ar</td><td>\"+badge+\"</td></tr>\";}).join('');",
-        "return \"<div class='panel panel-default'><div class='panel-heading'><strong>Factures recentes</strong></div><div class='panel-body'><table class='table table-bordered table-striped'><thead><tr><th>Date</th><th>Montant</th><th>Statut</th></tr></thead><tbody>\"+rows+\"</tbody></table></div></div>\";"
+        "const byResId={}; reservations.forEach(r=>{byResId[Number(r.persistenceId||r.persistenceId_string)]=r;});",
+        "const byClientId={}; clientes.forEach(c=>{byClientId[Number(c.persistenceId||c.persistenceId_string)]=c;});",
+        "const rows=factures.slice(0,8).map(item=>{const d=item.dateFacture?new Date(item.dateFacture).toLocaleDateString('fr-FR'):'-';const status=String(item.statutPaiement||'-');const badge=status==='PAYE'?\"<span class='label label-success'>PAYE</span>\":\"<span class='label label-default'>\"+status+\"</span>\";const fid=Number(item.persistenceId||item.persistenceId_string||0);const res=byResId[fid-1]||{};const cli=byClientId[Number(res.persistenceId||res.persistenceId_string||0)-1]||{};const nom=[cli.nomClient,cli.prenomClient].filter(v=>v!==undefined&&v!==null&&String(v).trim()!=='').join(' ')||'-';const tel=cli.telephone||'-';const piece=cli.pieceIdentite||'-';const dr=res.dateReservation?new Date(res.dateReservation).toLocaleDateString('fr-FR'):'-';return \"<tr><td>\"+d+\"</td><td>\"+nom+\"<br/><small>Tel: \"+tel+\" | Piece: \"+piece+\"</small></td><td>\"+dr+\"</td><td>\"+Number(item.montant||0)+\" Ar</td><td>\"+badge+\"</td></tr>\";}).join('');",
+        "return \"<div class='panel panel-default'><div class='panel-heading'><strong>Factures recentes</strong></div><div class='panel-body'><table class='table table-bordered table-striped'><thead><tr><th>Date facture</th><th>Client</th><th>Date reservation</th><th>Montant</th><th>Statut</th></tr></thead><tbody>\"+rows+\"</tbody></table></div></div>\";"
       ]
     },
     "dashboard_chambres_html": {
       "type": "expression",
       "exposed": false,
       "value": [
-        "const chambres=Array.isArray($data.chambres)?$data.chambres.slice():[];",
+        "const rawChambres=Array.isArray($data.chambres)?$data.chambres.slice():[];",
+        "const norm=value=>String(value||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');",
+        "const rank=item=>{const s=norm(item&&item.statut); if(s==='sale') return 3; if(s.includes('occupee')) return 2; if(s==='propre') return 1; return 0;};",
+        "const byNumero={}; rawChambres.forEach(item=>{const key=String(item.numero||''); if(key && (!byNumero[key] || rank(item)>rank(byNumero[key]))){byNumero[key]=item;}});",
+        "const chambres=Object.keys(byNumero).map(key=>byNumero[key]);",
         "if(!chambres.length){return \"<div class='panel panel-default'><div class='panel-heading'><strong>Etat des chambres</strong></div><div class='panel-body'>Aucune chambre disponible.</div></div>\";}",
         "chambres.sort((a,b)=>Number(a.numero||0)-Number(b.numero||0));",
         "const rows=chambres.map(item=>\"<tr><td>\"+(item.numero||'-')+\"</td><td>\"+(item.statut||'-')+\"</td></tr>\").join('');",

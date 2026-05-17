@@ -4,7 +4,7 @@
   "type": "form",
   "uuid": "4338cab1-6e0e-417a-b600-d2508fcd060c",
   "modelVersion": "2.6",
-  "lastUpdate": 1776102000000,
+  "lastUpdate": 1778517600000,
   "description": "Page generated with Bonita UI designer",
   "rows": [
     [
@@ -31,11 +31,11 @@
           },
           "text": {
             "type": "interpolation",
-            "value": "Nettoyage chambre"
+            "value": "Nettoyer la chambre"
           },
           "alignment": {
             "type": "constant",
-            "value": "center"
+            "value": "left"
           },
           "dimension": {
             "type": "constant",
@@ -46,7 +46,7 @@
             "value": false
           }
         },
-        "reference": "clean-title-simple",
+        "reference": "clean-title-modern",
         "hasValidationError": false,
         "id": "pbTitle",
         "description": ""
@@ -64,7 +64,7 @@
         "propertyValues": {
           "allowHTML": {
             "type": "constant",
-            "value": false
+            "value": true
           },
           "labelHidden": {
             "type": "constant",
@@ -84,18 +84,67 @@
           },
           "text": {
             "type": "interpolation",
-            "value": "Nettoyage termin\u00e9 ?"
+            "value": "{{clean_summary_html}}"
           },
           "alignment": {
             "type": "constant",
-            "value": "center"
+            "value": "left"
           },
           "dimension": {
             "type": "constant",
             "value": 12
           }
         },
-        "reference": "clean-question-simple",
+        "reference": "clean-summary-modern",
+        "hasValidationError": false,
+        "id": "pbText",
+        "description": ""
+      }
+    ],
+    [
+      {
+        "type": "component",
+        "dimension": {
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12
+        },
+        "propertyValues": {
+          "allowHTML": {
+            "type": "constant",
+            "value": true
+          },
+          "labelHidden": {
+            "type": "constant",
+            "value": true
+          },
+          "hidden": {
+            "type": "constant",
+            "value": false
+          },
+          "cssClasses": {
+            "type": "constant",
+            "value": ""
+          },
+          "label": {
+            "type": "interpolation",
+            "value": ""
+          },
+          "text": {
+            "type": "interpolation",
+            "value": "<div class='alert alert-info'><strong>Action attendue</strong><br/>Nettoyez la chambre, remplacez les articles obligatoires puis validez pour la remettre disponible.</div>"
+          },
+          "alignment": {
+            "type": "constant",
+            "value": "left"
+          },
+          "dimension": {
+            "type": "constant",
+            "value": 12
+          }
+        },
+        "reference": "clean-help-modern",
         "hasValidationError": false,
         "id": "pbText",
         "description": ""
@@ -125,7 +174,7 @@
           },
           "label": {
             "type": "interpolation",
-            "value": "Valider"
+            "value": "Marquer la chambre comme propre"
           },
           "buttonStyle": {
             "type": "constant",
@@ -185,7 +234,7 @@
           },
           "assign": {
             "type": "constant",
-            "value": false
+            "value": true
           },
           "url": {
             "type": "interpolation",
@@ -200,7 +249,7 @@
             "value": ""
           }
         },
-        "reference": "clean-button-simple",
+        "reference": "clean-button-modern",
         "hasValidationError": false,
         "id": "pbButton",
         "description": ""
@@ -249,7 +298,7 @@
             "value": 12
           }
         },
-        "reference": "clean-error-simple",
+        "reference": "clean-error-modern",
         "hasValidationError": false,
         "id": "pbText",
         "description": ""
@@ -263,6 +312,59 @@
         "../API/bpm/userTask/{{taskId}}"
       ],
       "exposed": false
+    },
+    "context": {
+      "type": "url",
+      "value": [
+        "../API/bpm/userTask/{{taskId}}/context"
+      ],
+      "exposed": false
+    },
+    "reservation": {
+      "type": "url",
+      "value": [
+        "../{{context.reservation_ref.link}}"
+      ],
+      "exposed": false
+    },
+    "clean_client": {
+      "type": "url",
+      "value": [
+        "{{reservation|lazyRef:'cliente'}}"
+      ],
+      "exposed": false
+    },
+    "clean_chambre": {
+      "type": "url",
+      "value": [
+        "{{reservation|lazyRef:'chambre'}}"
+      ],
+      "exposed": false
+    },
+    "clean_categorie": {
+      "type": "url",
+      "value": [
+        "{{clean_chambre|lazyRef:'categorie'}}"
+      ],
+      "exposed": false
+    },
+    "clean_summary_html": {
+      "type": "expression",
+      "exposed": false,
+      "value": [
+        "const c=$data.clean_client||{};",
+        "const r=$data.reservation||{};",
+        "const ch=$data.clean_chambre||{};",
+        "const rawCat=$data.clean_categorie;",
+        "const cat=Array.isArray(rawCat)?((rawCat[0]&&rawCat[0].nom)||'Non definie'):((rawCat&&rawCat.nom)||'Non definie');",
+        "const fullName=[c.nomClient,c.prenomClient].filter(v=>v!==undefined&&v!==null&&String(v).trim()!=='').join(' ').trim();",
+        "const pageStyle=\"<style>body{background:#eef4f6}.panel{border:0;border-radius:18px;box-shadow:0 14px 34px rgba(12,43,60,.14);overflow:hidden}.panel-heading{background:linear-gradient(135deg,#0f3d57,#1f7a8c)!important;color:#fff!important;border:0}.panel-body{background:linear-gradient(135deg,#ffffff,#f4fbfc)}h2,h3,h4{color:#0f3d57;font-weight:800}.table{background:#fff;border-radius:14px;overflow:hidden}.table>thead>tr>th{background:#0f3d57;color:#fff;border-color:#0f3d57}.alert{border:0;border-radius:16px;box-shadow:0 10px 26px rgba(12,43,60,.10)}.btn-primary{background:#d66b00;border-color:#b85c00;border-radius:14px;font-weight:700}.form-control{border-radius:12px;border-color:#c9dce3}</style>\";",
+        "return pageStyle+\"<div class='row'>\"+",
+        "\"<div class='col-sm-4'><div class='panel panel-default'><div class='panel-heading'><strong>CHAMBRE A TRAITER</strong></div><div class='panel-body'><h3>\"+(ch.numero!==undefined?ch.numero:'-')+\"</h3><p>Categorie : \"+cat+\"</p></div></div></div>\"+",
+        "\"<div class='col-sm-4'><div class='panel panel-default'><div class='panel-heading'><strong>STATUT ACTUEL</strong></div><div class='panel-body'><h3>\"+((ch.statut||'-').toString())+\"</h3><p>Reservation : \"+((r.statut||'-').toString())+\"</p></div></div></div>\"+",
+        "\"<div class='col-sm-4'><div class='panel panel-default'><div class='panel-heading'><strong>CLIENT CONCERNE</strong></div><div class='panel-body'><h3>\"+(fullName||'Client en attente')+\"</h3><p>Phone : \"+((c.telephone||'-').toString())+\"</p><p>Nuits : \"+(r.nbNuits!==undefined?r.nbNuits:'-')+\"</p></div></div></div>\"+",
+        "\"</div>\";"
+      ]
     },
     "submit_errors_list": {
       "type": "expression",
