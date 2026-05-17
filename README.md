@@ -1,113 +1,139 @@
-# E-Resto - Processus hotel Bonita
+# E-Resto Hotel - Bonita BPM Project
 
-Projet Bonita Studio de gestion de reservation de chambres pour un hotel.
+E-Resto Hotel is a Bonita Studio project for managing hotel room reservations, invoicing, payment, room departure, housekeeping, stock verification and daily accounting follow-up.
 
-## Objectif
+## Project Scope
 
-Le processus permet de gerer une reservation de chambre, la generation de facture, l'encaissement, le depart du client, le nettoyage de la chambre et le suivi comptable.
+The hotel manages three room categories:
 
-L'hotel possede trois categories de chambres :
+| Category | Rooms | Night Price |
+| --- | --- | --- |
+| Standard | 101 to 106 | 15000 Ar |
+| Suite Senior | 201 to 206 | 30000 Ar |
+| Suite Prestige | 301 to 306 | 45000 Ar |
 
-- Standard : chambres 101 a 106, prix nuit 15000 Ar
-- Suite Senior : chambres 201 a 206, prix nuit 30000 Ar
-- Suite Prestige : chambres 301 a 306, prix nuit 45000 Ar
+A room can be sold only if it is clean and available. Each reservation consumes the following required articles:
 
-Pour vendre une chambre, elle doit etre propre et les articles obligatoires doivent etre disponibles :
+| Article | Quantity per night |
+| --- | --- |
+| gel douche | 1 |
+| papier hygienique | 1 |
+| pantoufle | 1 |
+| brosse a dent | 1 |
 
-- gel douche
-- papier hygienique
-- pantoufle
-- brosse a dent
+## Actors and Test Users
 
-## Acteurs
+| Actor | Responsibility | Test User |
+| --- | --- | --- |
+| Client | Starts and completes a reservation | `anthony.nichols` |
+| Receptionniste | Reviews invoice and collects payment | `april.sanchez` |
+| Femme de menage | Cleans rooms and replaces articles | `thomas.wallis` |
+| Comptable | Checks stock, invoices and dashboard | `virginie.jomphe` |
 
-- Client : effectue la reservation
-- Receptionniste : encaisse le montant de la facture
-- Femme de menage : nettoie la chambre et remplace les articles
-- Comptable : verifie les stocks, compte les factures et consulte le tableau de bord
+## Business Workflow
 
-Utilisateurs de test configures :
+1. The client submits a reservation form with category, identity and stay details.
+2. The system initializes reference data if needed.
+3. The system selects a clean room for the requested category.
+4. The system generates the invoice.
+5. The receptionist collects the invoice amount.
+6. After payment, the room status becomes `occupee`.
+7. The client confirms departure.
+8. After departure, the room status becomes `sale`.
+9. Housekeeping cleans the room and replaces required articles.
+10. After cleaning, the room status becomes `propre`.
+11. The accountant verifies stock, counts invoices and checks the dashboard.
 
-- Client : `anthony.nichols`
-- Receptionniste : `april.sanchez`
-- Femme de menage : `thomas.wallis`
-- Comptable : `virginie.jomphe`
+## Final Process Version
 
-## Flux principal
-
-1. Le client remplit le formulaire de reservation.
-2. Le systeme verifie la disponibilite d'une chambre propre dans la categorie demandee.
-3. Si une chambre propre existe, le systeme genere la facture.
-4. Le receptionniste encaisse le montant.
-5. Apres encaissement, la chambre devient `occupee`.
-6. Le client confirme son depart.
-7. Apres le depart, la chambre devient `sale`.
-8. La femme de menage nettoie la chambre et remplace les articles.
-9. Apres nettoyage, la chambre redevient `propre`.
-10. Le comptable verifie les articles en stock et consulte le tableau de bord.
-
-## Diagramme a deployer
-
-Le diagramme final a deployer est :
+Deploy this process diagram:
 
 ```text
 app/diagrams/E-Resto-3.4.proc
 ```
 
-Les anciennes versions ne sont pas necessaires pour le deploiement final.
+Process name and version:
 
-## BDM
+```text
+Hotel 3.4
+```
 
-Le modele de donnees metier contient notamment :
+## Business Data Model
 
-- `CategorieChambre`
-- `Chambre`
-- `Article`
-- `Cliente`
-- `Reservation`
-- `Facture`
-- `ConsommationArticle`
+The project uses the following main BDM objects:
 
-Les donnees de reference sont initialisees automatiquement par le processus :
+| Object | Purpose |
+| --- | --- |
+| `CategorieChambre` | Room category and price |
+| `Chambre` | Room number, status and category |
+| `Article` | Required room articles and stock |
+| `Cliente` | Customer identity and contact data |
+| `Reservation` | Reservation details |
+| `Facture` | Invoice amount and payment status |
+| `ConsommationArticle` | Article consumption tracking |
 
-- categories
-- chambres
-- articles
+Reference data is initialized automatically by the process:
 
-## Pages principales
+- room categories
+- rooms
+- required articles
 
-- `formReservation`
-- `formEncaisserMontant`
-- `formDepart`
-- `formNettoyer`
-- `formVerifierStock`
-- `formTableauBord`
+## Forms
 
-Les pages ont une interface simple avec un style moderne integre.
+| Form | Purpose |
+| --- | --- |
+| `formReservation` | Customer reservation form |
+| `formEncaisserMontant` | Payment validation form |
+| `formDepart` | Customer departure confirmation |
+| `formNettoyer` | Room cleaning confirmation |
+| `formVerifierStock` | Stock verification |
+| `formTableauBord` | Invoice, room and stock dashboard |
 
-## Deploiement
+The forms include a simple modern UI style directly inside the Bonita UI Designer pages.
 
-Dans Bonita Studio :
+## Local Runtime
 
-1. Deployer le BDM si Bonita le demande.
-2. Deployer le processus `Hotel 3.4`.
-3. Lancer un nouveau cas avec l'utilisateur `anthony.nichols`.
-4. Continuer le test avec les utilisateurs selon les acteurs.
+Bonita local application URL:
 
-## Test rapide
+```text
+http://localhost:29561/
+```
 
-Sequence de test conseillee :
+## Deployment Steps
 
-1. `anthony.nichols` lance `Hotel 3.4` et reserve une chambre.
-2. `april.sanchez` voit la tache `Encaisser montant`.
-3. Apres encaissement, `anthony.nichols` voit la tache `Depart de l'hotel`.
-4. Apres le depart, `thomas.wallis` voit la tache `Nettoyer Chambre + remplacer article`.
-5. Apres nettoyage, `virginie.jomphe` verifie le stock et consulte le tableau de bord.
+1. Open the project in Bonita Studio.
+2. Deploy the BDM if Bonita Studio requests it.
+3. Deploy the process `Hotel 3.4`.
+4. Start a new case from the Bonita User Application.
+
+## Test Scenario
+
+Use this sequence to validate the process:
+
+1. Log in as `anthony.nichols`.
+2. Start process `Hotel 3.4`.
+3. Submit a reservation.
+4. Log in as `april.sanchez`.
+5. Complete `Encaisser montant`.
+6. Log in again as `anthony.nichols`.
+7. Complete `Depart de l'hotel`.
+8. Log in as `thomas.wallis`.
+9. Complete `Nettoyer Chambre + remplacer article`.
+10. Log in as `virginie.jomphe`.
+11. Complete stock verification and check the dashboard.
+
+## Room Status Rules
+
+| Event | Room Status |
+| --- | --- |
+| Initial reference data | `propre` |
+| After payment | `occupee` |
+| After customer departure | `sale` |
+| After housekeeping | `propre` |
 
 ## Notes
 
-- Les chambres disponibles doivent avoir le statut `propre`.
-- Une chambre devient `occupee` apres paiement.
-- Une chambre devient `sale` apres le depart du client.
-- Une chambre redevient `propre` apres nettoyage.
-- Le tableau de bord affiche les factures recentes avec les informations du client.
+- Only clean rooms are available for reservation.
+- If no clean room exists in the requested category, no room should be assigned.
+- The dashboard displays recent invoices with customer information.
+- The stock page groups required articles to avoid duplicate display.
