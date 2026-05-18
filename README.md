@@ -2,6 +2,18 @@
 
 E-Resto Hotel is a Bonita Studio project for managing hotel room reservations, invoicing, payment, room departure, housekeeping, stock verification and daily accounting follow-up.
 
+## Demo
+
+The demo below represents the final Bonita process connected in the project.
+
+![E-Resto Hotel process demo](docs/e-hotel-process-demo.svg)
+
+Bonita local application URL:
+
+```text
+http://localhost:29561/
+```
+
 ## Project Scope
 
 The hotel manages three room categories:
